@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Dat Jelly</title>
+<style type="text/css">
+
+
+
+div#bottomdiv {
+	position:fixed;
+	bottom:0px;
+	left:0px;
+	width:100%;
+	color:#FFFFFF;
+	background:#f9f9f9;
+	padding:8px;
+}
+
+ideas {
+	text-align: center;
+}
+#apDiv1 {
+	position: absolute;
+	width: 84px;
+	height: 25px;
+	z-index: 1;
+	left: 331px;
+	top: 5003px;
+}
+a:link {
+	color: #000;
+	font-weight: bold;
+	text-decoration: none;
+}
+a:visited {
+	text-decoration: none;
+	color: #E6E6E6;
+}
+a:hover {
+	text-decoration: none;
+	color: #F00;
+}
+a:active {
+	text-decoration: none;
+}
+#apDiv2 {
+	position: absolute;
+	width: 200px;
+	height: 115px;
+	z-index: 2;
+	left: 620px;
+	top: 5023px;
+}
+</style>
+
+ <link rel="stylesheet" href="dog2019.css">
+<link type="text/css" rel="stylesheet" href="utopia.css"/>
+   <link rel="stylesheet" href="readable/readable.css">
+
+<link rel="shortcut icon" href="cc4.ico" type="image/x-icon" />
+
+</head>
+
+<body>
+
+<u> Jordan Studdard</u>
+
+<br><br>
+<img src="jordan.jpg">  <br> 
+Jordan is a builder of things. <br><br>
+
+He is a force on a youtube <a href="https://www.youtube.com/channel/UCPjHhJ3fxgcV5Gv5uVAhNEA/" target="_blank">Jordan Studdard's youtube page</a> <br><br>
+
+
+</body>

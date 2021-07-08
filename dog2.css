@@ -1,0 +1,226 @@
+body {
+  background-color:#ffffff;
+
+    font-family: "plantin,Helvetica,Arial,serif;
+    font-size: .875 em;
+    line-height: 1.42857143;
+    color: #000;
+
+}
+
+
+h1 
+{
+font-family:utopia_serif;
+ color: #006400;
+ font-size: 7em;
+ }
+
+li 
+{
+ color: #006400;
+ }
+ 
+ 
+ .navbar-inverse .navbar-nav > li > a
+ {
+ color: #006400;
+ }
+
+ ul 
+{
+ color: #006400;
+ }
+
+ .navbar-nav  {
+ color: #006400;
+ }
+ 
+ .navbar-inverse .navbar-brand {
+ 
+ color: #006400;
+ 
+ }
+ .navbar-inverse .navbar-nav
+ 
+ {
+ 
+ color: #006400;
+ 
+ }
+ 
+.navbar {
+
+color: #006400;
+}
+.rotate90 {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+img {
+    image-orientation: from-image;
+}
+
+.btn {
+background-color: #006400;
+font-size: 45px; }
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+video {
+    max-width: 100%;
+    height: auto;
+}
+
+
+.dropdown{
+background-color: #006400;
+ font-size: 45px;
+height: 70px;
+}
+
+.sidenav {
+    padding-top: 20px;
+    background-color: #006400
+    height: 100%;}
+    
+    .well {
+    min-height: 20px;
+    padding: 19px;
+    margin-bottom: 20px;
+    background-color: #006400;
+    border: 1px solid #000;
+    border-radius: 4px;}
+    
+    a {
+    color: #006400;
+    text-decoration: none;
+}
+a {
+    background-color: transparent;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #000;
+    border-color: #fff;
+}
+
+@font-face {
+   font-family: plantin;
+   src: url(fonts/plantin.ttf);
+}
+
+body {
+   font-family: plantin;
+   font-size: 3em;
+	text-align: center;
+	font-weight: bold;
+	font-style: normal;
+	padding: 50px 75px;
+}
+
+.navbar-brand {
+    float: left;
+    height: 150px;
+    padding: 15px 15px;
+    font-size: 2em;
+    line-height: 20px;
+}	
+	
+	
+	.footer {
+    background-color: #fff;
+    color: white;
+    padding: 15px;
+}
+	
+	/*MEDIA QUERY*/
+@media only screen and (max-width : 640px) {
+
+	header {
+
+		position: absolute;
+
+	}
+
+	#menu-icon {
+
+		display:inline-block;
+
+	}
+
+	nav ul, nav:active ul { 
+
+		display: none;
+		position: absolute;
+		padding: 20px;
+		background: #fff;
+		border: 5px solid #444;
+		right: 20px;
+		top: 60px;
+		width: 50%;
+		border-radius: 4px 0 4px 4px;
+
+	}
+
+	nav li {
+
+		text-align: center;
+		width: 100%;
+		padding: 10px 0;
+		margin: 0;
+
+	}
+
+	nav:hover ul {
+
+		display: block;
+
+	}
+
+   
+     @media screen and (max-width: 700px) {
+ .navbar-brand {
+    font-size: 32px; /* last left padding value _can_ be left away */
+}
+   
+   p {
+   font-family: plantin;
+   font-size: .75em;
+}
+ 
+body {
+   font-family: plantin;
+   font-size: .75em;
+}
+   
+ 
+ h1{font-family: plantin;   
+ font-size: 1em;
+}
+ h2{font-family: plantin;   
+ font-size: 1em;
+}   
+
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+video {
+    max-width: 100%;
+    height: auto;
+}
+
+   }
+  
+

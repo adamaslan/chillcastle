@@ -1,0 +1,81 @@
+body {
+  background-color:#ededed;
+
+    font-family: "Utopia serif",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #000;
+
+}
+.btn {
+background-color: #ededed;
+font-size: 45px; }
+
+
+
+.dropdown{
+background-color: #ededed;
+background-color:
+f9f9f9;
+ font-size: 45px;
+height: 70px;
+}
+
+.sidenav {
+    padding-top: 20px;
+    background-color: #ededed;
+    height: 100%;}
+    
+    .well {
+    min-height: 20px;
+    padding: 19px;
+    margin-bottom: 20px;
+    background-color: #ededed;
+    border: 1px solid #000;
+    border-radius: 4px;}
+    
+    a {
+    color: #000;
+
+    text-decoration: none;
+}
+a {
+    background-color: transparent;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #000;
+    border-color: #fff;
+}
+
+@font-fa      {
+   font-family: myFirstFont;
+   src: url(fonts/utopia_serif-webfont.ttf);
+}
+
+body {
+   font-family: myFirstFont;
+   font-size: 3em;
+	text-align: left;
+	font-weight: bold;
+	font-style: normal;
+	padding: 50px 75px;
+}
+
+.navbar-brand {
+    float: left;
+    height: 50px;
+    padding: 15px 15px;
+    font-size: 2em;
+    line-height: 20px;
+}	
+	
+	
+	.footer {
+    background-color: #fff;
+    color: white;
+    padding: 15px;
+}
+	
+	

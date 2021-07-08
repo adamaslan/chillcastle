@@ -1,0 +1,41 @@
+@media screen and (max-width: 1020px) {
+  #container, #header, #content, #footer {
+    float: none;
+    width: auto;
+  }
+ #subtitle, #share, #slider, #sidebar{
+    display:none;
+  }
+  body { font-size: .5em; }
+}
+
+
+@font-face {
+   font-family: myFirstFont;
+   src: url(fonts/utopia_serif-webfont.ttf);
+}
+
+body {
+   font-family: myFirstFont;
+   font-size: 4em;
+	text-align: left;
+	font-weight: bold;
+	font-style: normal;
+	padding: 50px 75px;
+}
+
+a:link {
+	color: #000;
+	font-weight: bold;
+	text-decoration: none;
+}
+a:visited {
+	text-decoration: none;
+	color: #000023;
+}
+a:hover {
+	text-decoration: none;
+	color: #F00;
+}
+a:active {
+	text-decoration: none; }
