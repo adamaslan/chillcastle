@@ -12,7 +12,7 @@
 </head>
 
 
-<body>
+<body class="tooltip" title="These are the top notch galleries and artists in NYC as stated by @cosmicveggie" >
 <h3>Top Notch <br>Galleries and Artists, etc</h3>
 
 
@@ -57,3 +57,22 @@ Jen Xenia Plaskowitz </a>
 
 
 All of these artists and galleries are based in NYC. We would love some help building a larger database to include more New York galleries and artists, but also anything art related in the entire world. We have a particular love affair with Bushwick based galleries and artists currently. 
+
+<link rel="stylesheet" type="text/css" href="tooltipster/dist/css/tooltipster.bundle.min.css" />
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+<script type="text/javascript" src="tooltipster/dist/js/tooltipster.bundle.min.js"></script>
+
+
+<script>
+    $(document).ready(function() {
+        $('.tooltip').tooltipster();
+    });
+    
+    $('.tooltip').tooltipster({
+theme: 'tooltipster-noir'
+});
+</script>
+
+</body>
+</html>
