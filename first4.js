@@ -57,7 +57,7 @@ scrape();
 //   const text = await body.evaluate(el => el.innerText);
 
 //   // Convert the text to a JSON object
-//   // const data = JSON.parse(text);
+//  //  const data = JSON.parse(text);
 
 //   // Write the data to a JSON file
 //   // fs.writeFileSync('data.json', JSON.stringify(data));
