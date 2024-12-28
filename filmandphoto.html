@@ -19,6 +19,7 @@
             background-color: #f9f9f9;
             color: #000;
             line-height: 1.6;
+            font-size: 12px;
         }
 
         .container {
@@ -39,8 +40,8 @@
 
         #model-viewer {
             width: 100%;
-            height: 500px;
-            margin: 40px 0;
+            height: 300px;
+            margin: 0 0 40px 0;
         }
 
         a:link {
@@ -69,13 +70,19 @@
             }
 
             #model-viewer {
-                height: 300px;
+                height: 200px;
+            }
+
+            body {
+                padding: 10px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <div id="model-viewer"></div>
+        
         <br />
         <br />
         <br />
@@ -89,12 +96,10 @@
         <a href="www.tarasgroi.com"><u>www.tarasgroi.com</u></a></h2><br><br>
         
         Jordan Studdard @jordanstuddard - 
-		Jordan Studdard, known on TikTok as @jordanstuddard, is a content creator celebrated for his whimsical and imaginative short-form videos. He often features various characters he refers to as his "friends," such as Jacob, Natalia, and Catherine. With over 20.2 million likes and 776,000 followers, Studdard has built a significant following by crafting engaging and creative stories. Based in New York City, he shares his creative journey, including building miniature studios and DIY projects. His content is a blend of storytelling, creativity, and personal experiences, making him a beloved figure on social media.<br><br>
+        Jordan Studdard, known on TikTok as @jordanstuddard, is a content creator celebrated for his whimsical and imaginative short-form videos. He often features various characters he refers to as his "friends," such as Jacob, Natalia, and Catherine. With over 20.2 million likes and 776,000 followers, Studdard has built a significant following by crafting engaging and creative stories. Based in New York City, he shares his creative journey, including building miniature studios and DIY projects. His content is a blend of storytelling, creativity, and personal experiences, making him a beloved figure on social media.<br><br>
         Yago @yagowashere<br><br>
         Adam Aslan - @nycpony<br><br>
-		Adam Timur Aslan incorporates full-stack development with interests in film sound, 3d Animation, music, writing, and brutalist design to produce music videos and other web content.<br><br>
-
-        <div id="model-viewer"></div>
+        Adam Timur Aslan incorporates full-stack development with interests in film sound, 3d Animation, music, writing, and brutalist design to produce music videos and other web content.<br><br>
     </div>
 
     <div id="bottomdiv">
@@ -135,18 +140,23 @@
 
         let direction = 1;
         let positionX = -5;
+        let rotationSpeed = 0.02; // Added rotation speed
 
         function animate() {
             requestAnimationFrame(animate);
 
             if (model) {
-                positionX += 0.05 * direction;
+                // Slower horizontal movement
+                positionX += 0.03 * direction;
 
                 if (positionX > 5 || positionX < -5) {
                     direction *= -1;
                 }
 
                 model.position.x = positionX;
+                // Added constant rotation
+                model.rotation.y += rotationSpeed;
+                
                 if (model.skeleton) {
                     const bone = model.skeleton.bones.find(bone => bone.name === 'legBoneName');
                     if (bone) {
