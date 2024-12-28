@@ -1,154 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Film and Photography Studio</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Film and Photography</title>
     <link rel="shortcut icon" href="cc4.ico" type="image/x-icon" />
     <style>
-        /* Global Styles */
+        /* Base styles */
         body {
             margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            overflow: hidden;
+            padding: 20px;
+            font-family: 'Utopia', serif;
+            background-color: #f9f9f9;
+            color: #000;
+            line-height: 1.6;
         }
 
-        canvas {
-            display: block;
-        }
-
-        /* Header Section */
-        header {
-            background-color: #333;
-            color: white;
-            text-align: center;
+        /* Container layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
         }
 
-        header h1 {
-            margin: 0;
-            font-size: 2.5em;
-        }
-
-        header p {
-            margin: 5px 0;
-            font-size: 1.2em;
-        }
-
-        /* Links and Photographer Section */
+        /* Photography section */
         .photographers {
-            text-align: center;
-            margin: 50px 0;
+            margin: 40px 0;
         }
 
-        .photographers a {
-            color: #007BFF;
+        .photographer-link {
+            display: block;
+            margin: 15px 0;
             font-size: 1.2em;
+            transition: color 0.3s ease;
+        }
+
+        /* Links styling */
+        a {
+            color: #000;
+            font-weight: bold;
             text-decoration: none;
-            padding: 10px;
-            border: 1px solid #007BFF;
-            margin: 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
         }
 
-        .photographers a:hover {
-            background-color: #007BFF;
-            color: white;
+        a:hover {
+            color: #F00;
+            text-decoration: underline;
         }
 
-        /* Footer Section */
-        #bottomdiv {
+        /* 3D viewer container */
+        #model-viewer {
+            width: 100%;
+            height: 500px;
+            margin: 40px 0;
+            background: #000;
+        }
+
+        /* Fixed bottom div */
+        .bottom-div {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            color: #333;
-            background-color: #f9f9f9;
+            background: #f9f9f9;
             padding: 8px;
             text-align: center;
+            border-top: 1px solid #ddd;
         }
 
-        /* 3D Animation Container */
-        .three-container {
-            width: 100%;
-            height: 100vh;
+        /* Custom font loading */
+        @font-face {
+            font-family: 'Utopia';
+            src: url('path-to-your-utopia-font.woff2') format('woff2'),
+                 url('path-to-your-utopia-font.woff') format('woff');
+            font-display: swap;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+
+            #model-viewer {
+                height: 300px;
+            }
         }
     </style>
 </head>
-
 <body>
+    <div class="container">
+        <header>
+            <h1>Studio - @youngandgrumpy</h1>
+        </header>
 
-    <!-- Header Section -->
-    <header>
+        <section class="photographers">
+            <h2>Photographers and Videographers:</h2>
+            
+            <a href="https://www.troyvetri.com/" class="photographer-link">
+                Troy Vetri
+            </a>
+            
+            <a href="https://www.tarasgroi.com" class="photographer-link">
+                Tara Sgroi
+            </a>
+            
+            <a href="https://instagram.com/jordanstuddard" class="photographer-link">
+                Jordan Studdard @jordanstuddard
+            </a>
+            
+            <a href="https://instagram.com/yagowashere" class="photographer-link">
+                Yago @yagowashere
+            </a>
+            
+            <a href="https://instagram.com/nycpony" class="photographer-link">
+                Adam Aslan - @nycpony
+            </a>
+        </section>
 
-        <p>Film and Photography Studio</p>
-		<p>@youngandgrumpy</p>
-        <p>Photographers and Videographers</p>
-    </header>
-
-    <!-- Photographer Links -->
-    <div class="photographers">
-        <p>Check out our talented photographers:</p>
-        <a href="/www.troyvetri.com/" target="_blank">Troy Vetri</a>
-        <a href="www.tarasgroi.com" target="_blank">Tara Sgroi</a>
-        <a href="https://www.instagram.com/jordanstuddard" target="_blank">Jordan Studdard</a>
-        <a href="https://www.instagram.com/yagowashere" target="_blank">Yago</a>
-        <a href="https://www.instagram.com/nycpony" target="_blank">Adam Aslan</a>
+        <div id="model-viewer"></div>
     </div>
 
-    <!-- 3D Animation Section -->
-    <div class="three-container" id="three-container"></div>
-
-    <!-- Footer Section -->
-    <div id="bottomdiv">
-        <p>&copy; 2024 youngandgrumpy Studio</p>
+    <div class="bottom-div">
+        <!-- Add your bottom content here -->
     </div>
 
-    <!-- Three.js Scripts -->
+    <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
     <script>
-        // Scene, Camera, Renderer
+        // Initialize Three.js scene
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true });
-        document.getElementById('three-container').appendChild(renderer.domElement);
+        const modelViewer = document.getElementById('model-viewer');
+        modelViewer.appendChild(renderer.domElement);
 
-        // Light
-        const light = new THREE.DirectionalLight(0xffffff, 1);
-        light.position.set(1, 1, 1).normalize();
-        scene.add(light);
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
 
-        // Load GLB Model
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(1, 1, 1).normalize();
+        scene.add(directionalLight);
+
+        // Model loading and animation
         const loader = new THREE.GLTFLoader();
         let model;
         let modelHeight = 0;
 
-        loader.load('cebollito2.glb', function (gltf) {
+        loader.load('cebollito2.glb', (gltf) => {
             model = gltf.scene;
-            model.scale.set(0.3, 0.3, 0.3); // Scale to fit 300px vertically
+            model.scale.set(0.3, 0.3, 0.3);
 
-            // Get model's bounding box to calculate its height
             const bbox = new THREE.Box3().setFromObject(model);
             modelHeight = bbox.max.y - bbox.min.y;
 
             scene.add(model);
-
-            // Adjust the renderer size based on the model height
-            renderer.setSize(window.innerWidth, modelHeight + window.innerWidth);
-
-            // Set camera position to ensure model fits
+            
+            // Set initial camera position
             camera.position.z = modelHeight * 2;
-        }, undefined, function (error) {
-            console.error(error);
+            
+            // Update renderer size
+            updateRendererSize();
+        }, undefined, (error) => {
+            console.error('Error loading model:', error);
         });
 
-        // Animation variables
-        let direction = 1; // 1 for right, -1 for left
+        // Animation
+        let direction = 1;
         let positionX = -5;
 
         function animate() {
@@ -157,27 +181,30 @@
             if (model) {
                 positionX += 0.05 * direction;
 
-                // Reverse direction if out of bounds
                 if (positionX > 5 || positionX < -5) {
                     direction *= -1;
                 }
 
                 model.position.x = positionX;
+                model.rotation.y += 0.01;
             }
 
             renderer.render(scene, camera);
         }
 
-        animate();
-
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
+        // Responsive handling
+        function updateRendererSize() {
+            const width = modelViewer.clientWidth;
+            const height = modelViewer.clientHeight;
+            
+            camera.aspect = width / height;
             camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, modelHeight + window.innerWidth);
-        });
+            
+            renderer.setSize(width, height);
+        }
+
+        window.addEventListener('resize', updateRendererSize);
+        animate();
     </script>
-
 </body>
-
 </html>
