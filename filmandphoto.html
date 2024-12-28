@@ -1,85 +1,78 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title> Film and Photography</title>
-
-<link rel="shortcut icon" href="cc4.ico" type="image/x-icon" />
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Dat Jelly</title>
-<style type="text/css">
-
-
-
-div#bottomdiv {
-	position:fixed;
-	bottom:0px;
-	left:0px;
-	width:100%;
-	color:#FFFFFF;
-	background:#f9f9f9;
-	padding:8px;
-}
-
-ideas {
-	text-align: center;
-}
-#apDiv1 {
-	position: absolute;
-	width: 84px;
-	height: 25px;
-	z-index: 1;
-	left: 331px;
-	top: 5003px;
-}
-a:link {
-	color: #000;
-	font-weight: bold;
-	text-decoration: none;
-}
-a:visited {
-	text-decoration: none;
-	color: #E6E6E6;
-}
-a:hover {
-	text-decoration: none;
-	color: #F00;
-}
-a:active {
-	text-decoration: none;
-}
-#apDiv2 {
-	position: absolute;
-	width: 200px;
-	height: 115px;
-	z-index: 2;
-	left: 620px;
-	top: 5023px;
-}
-</style>
-
- <link rel="stylesheet" href="dog2019.css">
-<link type="text/css" rel="stylesheet" href="utopia.css"/>
-   <link rel="stylesheet" href="readable/readable.css">
-
-<link rel="shortcut icon" href="cc4.ico" type="image/x-icon" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Film and Photo Recs</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
 </head>
-
-
 <body>
-<br />
-<br />
-<br /> 
-Studio - @youngandgrumpy<br><br>
-Photographers and Videographers: <br><br>
+<script>
+  // Scene, Camera, Renderer
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
 
-Tara Sgroi
-  <a href= "www.tarasgroi.com"> <u> www.tarasgroi.com </u> </a> </h2><br><br>
-Jordan Studdard @jordanstuddard<br><br>
-Yago @yagowashere <br> <br>
-Adam Aslan - @nycpony
+  // Light
+  const light = new THREE.DirectionalLight(0xffffff, 1);
+  light.position.set(1, 1, 1).normalize();
+  scene.add(light);
 
- <br />
+  // Load GLB Model
+  const loader = new THREE.GLTFLoader();
+  let model;
+
+  loader.load('/path/to/cebollito2.glb', function (gltf) {
+    model = gltf.scene;
+    model.scale.set(0.3, 0.3, 0.3); // Scale to fit 300px vertically
+    scene.add(model);
+  }, undefined, function (error) {
+    console.error(error);
+  });
+
+  // Animation variables
+  let direction = 1; // 1 for right, -1 for left
+  let positionX = -5;
+
+  camera.position.z = 5;
+
+  function animate() {
+    requestAnimationFrame(animate);
+
+    if (model) {
+      positionX += 0.05 * direction;
+
+      // Reverse direction if out of bounds
+      if (positionX > 5 || positionX < -5) {
+        direction *= -1;
+      }
+
+      model.position.x = positionX;
+    }
+
+    renderer.render(scene, camera);
+  }
+
+  animate();
+
+  // Handle window resize
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+</script>
+</body>
+</html>
