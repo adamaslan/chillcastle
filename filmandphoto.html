@@ -22,7 +22,6 @@
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
   const renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
   // Light
@@ -33,11 +32,23 @@
   // Load GLB Model
   const loader = new THREE.GLTFLoader();
   let model;
+  let modelHeight = 0;
 
   loader.load('cebollito2.glb', function (gltf) {
     model = gltf.scene;
     model.scale.set(0.3, 0.3, 0.3); // Scale to fit 300px vertically
+
+    // Get model's bounding box to calculate its height
+    const bbox = new THREE.Box3().setFromObject(model);
+    modelHeight = bbox.max.y - bbox.min.y;
+
     scene.add(model);
+
+    // Adjust the renderer size based on the model height
+    renderer.setSize(window.innerWidth, modelHeight + window.innerWidth);
+
+    // Set camera position to ensure model fits
+    camera.position.z = modelHeight * 2;
   }, undefined, function (error) {
     console.error(error);
   });
@@ -45,8 +56,6 @@
   // Animation variables
   let direction = 1; // 1 for right, -1 for left
   let positionX = -5;
-
-  camera.position.z = 5;
 
   function animate() {
     requestAnimationFrame(animate);
@@ -60,6 +69,15 @@
       }
 
       model.position.x = positionX;
+
+      // If you want to animate specific bones (like legs), you would need to access them from the skeleton
+      // You can use this approach to animate the legs
+      if (model.skeleton) {
+        const bone = model.skeleton.bones.find(bone => bone.name === 'legBoneName'); // Replace with actual leg bone name
+        if (bone) {
+          bone.rotation.x += 0.01; // Rotate the leg
+        }
+      }
     }
 
     renderer.render(scene, camera);
@@ -71,7 +89,7 @@
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(window.innerWidth, modelHeight + window.innerWidth);
   });
 </script>
 </body>
