@@ -34,7 +34,7 @@
   const loader = new THREE.GLTFLoader();
   let model;
 
-  loader.load('/path/to/cebollito2.glb', function (gltf) {
+  loader.load('cebollito2.glb', function (gltf) {
     model = gltf.scene;
     model.scale.set(0.3, 0.3, 0.3); // Scale to fit 300px vertically
     scene.add(model);
