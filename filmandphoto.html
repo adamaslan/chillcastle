@@ -1,96 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Film and Photo Recs</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-    }
-    canvas {
-      display: block;
-    }
-  </style>
-</head>
-<body>
-<script>
-  // Scene, Camera, Renderer
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer({ antialias: true });
-  document.body.appendChild(renderer.domElement);
-
-  // Light
-  const light = new THREE.DirectionalLight(0xffffff, 1);
-  light.position.set(1, 1, 1).normalize();
-  scene.add(light);
-
-  // Load GLB Model
-  const loader = new THREE.GLTFLoader();
-  let model;
-  let modelHeight = 0;
-
-  loader.load('cebollito2.glb', function (gltf) {
-    model = gltf.scene;
-    model.scale.set(0.3, 0.3, 0.3); // Scale to fit 300px vertically
-
-    // Get model's bounding box to calculate its height
-    const bbox = new THREE.Box3().setFromObject(model);
-    modelHeight = bbox.max.y - bbox.min.y;
-
-    scene.add(model);
-
-    // Adjust the renderer size based on the model height
-    renderer.setSize(window.innerWidth, modelHeight + window.innerWidth);
-
-    // Set camera position to ensure model fits
-    camera.position.z = modelHeight * 2;
-  }, undefined, function (error) {
-    console.error(error);
-  });
-
-  // Animation variables
-  let direction = 1; // 1 for right, -1 for left
-  let positionX = -5;
-
-  function animate() {
-    requestAnimationFrame(animate);
-
-    if (model) {
-      positionX += 0.05 * direction;
-
-      // Reverse direction if out of bounds
-      if (positionX > 5 || positionX < -5) {
-        direction *= -1;
-      }
-
-      model.position.x = positionX;
-
-      // If you want to animate specific bones (like legs), you would need to access them from the skeleton
-      // You can use this approach to animate the legs
-      if (model.skeleton) {
-        const bone = model.skeleton.bones.find(bone => bone.name === 'legBoneName'); // Replace with actual leg bone name
-        if (bone) {
-          bone.rotation.x += 0.01; // Rotate the leg
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Film and Photography Studio</title>
+    <link rel="shortcut icon" href="cc4.ico" type="image/x-icon" />
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            overflow: hidden;
         }
-      }
-    }
 
-    renderer.render(scene, camera);
-  }
+        canvas {
+            display: block;
+        }
 
-  animate();
+        /* Header Section */
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
 
-  // Handle window resize
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, modelHeight + window.innerWidth);
-  });
-</script>
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        header p {
+            margin: 5px 0;
+            font-size: 1.2em;
+        }
+
+        /* Links and Photographer Section */
+        .photographers {
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .photographers a {
+            color: #007BFF;
+            font-size: 1.2em;
+            text-decoration: none;
+            padding: 10px;
+            border: 1px solid #007BFF;
+            margin: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .photographers a:hover {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        /* Footer Section */
+        #bottomdiv {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            color: #333;
+            background-color: #f9f9f9;
+            padding: 8px;
+            text-align: center;
+        }
+
+        /* 3D Animation Container */
+        .three-container {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Section -->
+    <header>
+
+        <p>Film and Photography Studio</p>
+		<p>@youngandgrumpy</p>
+        <p>Photographers and Videographers</p>
+    </header>
+
+    <!-- Photographer Links -->
+    <div class="photographers">
+        <p>Check out our talented photographers:</p>
+        <a href="/www.troyvetri.com/" target="_blank">Troy Vetri</a>
+        <a href="www.tarasgroi.com" target="_blank">Tara Sgroi</a>
+        <a href="https://www.instagram.com/jordanstuddard" target="_blank">Jordan Studdard</a>
+        <a href="https://www.instagram.com/yagowashere" target="_blank">Yago</a>
+        <a href="https://www.instagram.com/nycpony" target="_blank">Adam Aslan</a>
+    </div>
+
+    <!-- 3D Animation Section -->
+    <div class="three-container" id="three-container"></div>
+
+    <!-- Footer Section -->
+    <div id="bottomdiv">
+        <p>&copy; 2024 youngandgrumpy Studio</p>
+    </div>
+
+    <!-- Three.js Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
+    <script>
+        // Scene, Camera, Renderer
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        document.getElementById('three-container').appendChild(renderer.domElement);
+
+        // Light
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(1, 1, 1).normalize();
+        scene.add(light);
+
+        // Load GLB Model
+        const loader = new THREE.GLTFLoader();
+        let model;
+        let modelHeight = 0;
+
+        loader.load('cebollito2.glb', function (gltf) {
+            model = gltf.scene;
+            model.scale.set(0.3, 0.3, 0.3); // Scale to fit 300px vertically
+
+            // Get model's bounding box to calculate its height
+            const bbox = new THREE.Box3().setFromObject(model);
+            modelHeight = bbox.max.y - bbox.min.y;
+
+            scene.add(model);
+
+            // Adjust the renderer size based on the model height
+            renderer.setSize(window.innerWidth, modelHeight + window.innerWidth);
+
+            // Set camera position to ensure model fits
+            camera.position.z = modelHeight * 2;
+        }, undefined, function (error) {
+            console.error(error);
+        });
+
+        // Animation variables
+        let direction = 1; // 1 for right, -1 for left
+        let positionX = -5;
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (model) {
+                positionX += 0.05 * direction;
+
+                // Reverse direction if out of bounds
+                if (positionX > 5 || positionX < -5) {
+                    direction *= -1;
+                }
+
+                model.position.x = positionX;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, modelHeight + window.innerWidth);
+        });
+    </script>
+
 </body>
+
 </html>
