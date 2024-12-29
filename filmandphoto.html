@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Film and Photography</title>
-    
+
     <!-- Original links preserved -->
     <link rel="stylesheet" href="dog2019.css">
     <link type="text/css" rel="stylesheet" href="utopia.css"/>
@@ -39,9 +39,13 @@
         }
 
         #model-viewer {
-            width: 100%;
-            height: 300px;
-            margin: 0 0 40px 0;
+            width: calc(100% - 40px); /* Adjusting for 20px margin and padding */
+            height: calc(300px - 40px); /* Adjusting for 20px margin and padding */
+            margin: 20px;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            position: relative;
         }
 
         a:link {
@@ -70,7 +74,7 @@
             }
 
             #model-viewer {
-                height: 200px;
+                height: calc(200px - 40px);
             }
 
             body {
@@ -82,28 +86,29 @@
 <body>
     <div class="container">
         <div id="model-viewer"></div>
-        
+
         <br />
-        <br /><p>Production Companies</br />
+        <p>Production Companies</p>
         <br />
-        Young and Grumpy- @youngandgrumpy<br><br>
+        <p>Young and Grumpy - @youngandgrumpy<br>
         Young and Grumpy Productions is a Brooklyn-based company specializing in photo and video production, particularly for product and tabletop content. Known for its versatility, the company provides high-quality services for clients across Brooklyn, Queens, and Manhattan. They cater to both low-budget and high-end productions, ensuring flexibility and affordability without compromising on quality.
-		<a href="https://www.theyoungandgrumpy.com"><u>www.theyoungandgrumpy.com</u></a></p><br><br>
+        <a href="https://www.theyoungandgrumpy.com"><u>www.theyoungandgrumpy.com</u></a></p>
 
+        <br>
+        <h2>Photographers, Videographers, Film Sound:</h2>
+        <p>Troy Vetri - Troy Vetri is a talented Director of Photography known for his work in documentaries and commercials. His notable projects include "The Total Solar Eclipse as a Catalyst for Art in Erie," "Hot Ones | Truth or Dab with Gigi Hadid and Tan France," and "Science in Service of Community". Vetri's work often explores themes of community, science, and art, showcasing his ability to capture impactful and visually stunning stories.
+        <a href="/www.troyvetri.com/"><u>/www.troyvetri.com/</u></a></p>
 
-		Photographers, Videographers, Film Sound: <br><br>
-        
-        Troy Vetri - Troy Vetri is a talented Director of Photography known for his work in documentaries and commercials. His notable projects include "The Total Solar Eclipse as a Catalyst for Art in Erie," "Hot Ones | Truth or Dab with Gigi Hadid and Tan France," and "Science in Service of Community". Vetri's work often explores themes of community, science, and art, showcasing his ability to capture impactful and visually stunning stories.
-        <a href="/www.troyvetri.com/"><u>/www.troyvetri.com/</u></a></h2><br><br>
+        <p>Tara Sgroi
+        <a href="www.tarasgroi.com"><u>www.tarasgroi.com</u></a></p>
 
-        Tara Sgroi
-        <a href="www.tarasgroi.com"><u>www.tarasgroi.com</u></a></h2><br><br>
-        
-        Jordan Studdard @jordanstuddard - 
-        Jordan Studdard, known on TikTok as @jordanstuddard, is a content creator celebrated for his whimsical and imaginative short-form videos. He often features various characters he refers to as his "friends," such as Jacob, Natalia, and Catherine. With over 20.2 million likes and 776,000 followers, Studdard has built a significant following by crafting engaging and creative stories. Based in New York City, he shares his creative journey, including building miniature studios and DIY projects. His content is a blend of storytelling, creativity, and personal experiences, making him a beloved figure on social media.<br><br>
-        Yago @yagowashere<br><br>
-        Adam Aslan - @nycpony<br><br>
-        Adam Timur Aslan incorporates full-stack development with interests in film sound, 3d Animation, music, writing, and brutalist design to produce music videos and other web content.<br><br>
+        <p>Jordan Studdard @jordanstuddard - 
+        Jordan Studdard, known on TikTok as @jordanstuddard, is a content creator celebrated for his whimsical and imaginative short-form videos. He often features various characters he refers to as his "friends," such as Jacob, Natalia, and Catherine. With over 20.2 million likes and 776,000 followers, Studdard has built a significant following by crafting engaging and creative stories. Based in New York City, he shares his creative journey, including building miniature studios and DIY projects. His content is a blend of storytelling, creativity, and personal experiences, making him a beloved figure on social media.</p>
+
+        <p>Yago @yagowashere</p>
+
+        <p>Adam Aslan - @nycpony<br>
+        Adam Timur Aslan incorporates full-stack development with interests in film sound, 3d Animation, music, writing, and brutalist design to produce music videos and other web content.</p>
     </div>
 
     <div id="bottomdiv">
@@ -127,6 +132,7 @@
         const loader = new THREE.GLTFLoader();
         let model;
         let modelHeight = 0;
+        let angle = 0;
 
         loader.load('cebollito2.glb', function (gltf) {
             model = gltf.scene;
@@ -136,37 +142,33 @@
             modelHeight = bbox.max.y - bbox.min.y;
 
             scene.add(model);
-            camera.position.z = modelHeight * 2;
+            camera.position.z = modelHeight * 3;
             updateRendererSize();
         }, undefined, function (error) {
             console.error(error);
         });
 
-        let direction = 1;
-        let positionX = -5;
-        let rotationSpeed = 0.02; // Added rotation speed
+        let bounceSpeed = 0.03;
+        let bounceDirection = 1;
+        let radius = 3; // Radius for circular movement
 
         function animate() {
             requestAnimationFrame(animate);
 
             if (model) {
-                // Slower horizontal movement
-                positionX += 0.03 * direction;
+                angle += 0.01; // Update angle for revolution
 
-                if (positionX > 5 || positionX < -5) {
-                    direction *= -1;
+                model.position.x = radius * Math.cos(angle);
+                model.position.z = radius * Math.sin(angle);
+
+                // Bounce movement
+                model.position.y += bounceSpeed * bounceDirection;
+                if (model.position.y > 1 || model.position.y < -1) {
+                    bounceDirection *= -1;
                 }
 
-                model.position.x = positionX;
-                // Added constant rotation
-                model.rotation.y += rotationSpeed;
-                
-                if (model.skeleton) {
-                    const bone = model.skeleton.bones.find(bone => bone.name === 'legBoneName');
-                    if (bone) {
-                        bone.rotation.x += 0.01;
-                    }
-                }
+                // Rotation
+                model.rotation.y += 0.02;
             }
 
             renderer.render(scene, camera);
