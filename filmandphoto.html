@@ -117,137 +117,125 @@
 <!-- HTML -->
 <div id="model-viewer" style="width: 100%; height: 100%;"></div>
 
-<!-- Scripts -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
-<script>
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    const modelViewer = document.getElementById('model-viewer');
-    modelViewer.appendChild(renderer.domElement);
 
-    const light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(1, 1, 1).normalize();
-    scene.add(light);
 
-    const loader = new THREE.GLTFLoader();
-    let model;
-    let angle = 0;
-    let bounceSpeed = 0.03;
-    let bounceDirection = 1;
-    let radius = 1; // Radius for circular movement, dynamically adjusted
+ <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        const modelViewer = document.getElementById('model-viewer');
+        modelViewer.appendChild(renderer.domElement);
 
-    function getUsableCanvasBounds() {
-        const width = modelViewer.clientWidth;
-        const height = modelViewer.clientHeight;
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(1, 1, 1).normalize();
+        scene.add(light);
 
-        // Define borders (10% of canvas width/height)
-        const borderX = width * 0.1;
-        const borderY = height * 0.1;
+        const loader = new THREE.GLTFLoader();
+        let model;
+        let targetPosition = new THREE.Vector3();
+        let speed = 0.02;
 
-        return {
-            minX: borderX,
-            maxX: width - borderX,
-            minY: borderY,
-            maxY: height - borderY,
-            width: width - 2 * borderX,
-            height: height - 2 * borderY,
-        };
-    }
+        function getUsableCanvasBounds() {
+            const width = modelViewer.clientWidth;
+            const height = modelViewer.clientHeight;
 
-    loader.load('cebollito2.glb', function (gltf) {
-        model = gltf.scene;
+            // Define borders (10% of canvas width/height)
+            const borderX = width * 0.1;
+            const borderY = height * 0.1;
 
-        // Calculate the bounding box of the model
-        const bbox = new THREE.Box3().setFromObject(model);
-        const modelSize = {
-            width: bbox.max.x - bbox.min.x,
-            height: bbox.max.y - bbox.min.y,
-            depth: bbox.max.z - bbox.min.z,
-        };
-
-        // Get usable canvas bounds
-        const bounds = getUsableCanvasBounds();
-
-        // Scale the model to fit within the usable bounds
-        const scaleX = bounds.width / modelSize.width;
-        const scaleY = bounds.height / modelSize.height;
-        const scale = Math.min(scaleX, scaleY) * 0.9; // Scale down slightly to leave some padding
-        model.scale.set(scale, scale, scale);
-
-        // Center the model in the scene
-        model.position.set(0, -modelSize.height / 2 * scale, 0);
-
-        // Adjust radius based on usable width and height
-        radius = Math.min(bounds.width, bounds.height) / (2 * scale);
-
-        scene.add(model);
-
-        // Adjust camera position
-        camera.position.z = modelSize.depth * scale * 2;
-        updateRendererSize();
-    }, undefined, function (error) {
-        console.error(error);
-    });
-
-    function animate() {
-        requestAnimationFrame(animate);
-
-        if (model) {
-            angle += 0.01; // Update angle for revolution
-
-            // Circular movement
-            model.position.x = radius * Math.cos(angle);
-            model.position.z = radius * Math.sin(angle);
-
-            // Bounce movement
-            model.position.y += bounceSpeed * bounceDirection;
-            const bounds = getUsableCanvasBounds();
-            const maxBounceHeight = bounds.height / 4;
-            if (model.position.y > maxBounceHeight || model.position.y < -maxBounceHeight) {
-                bounceDirection *= -1;
-            }
-
-            // Rotation
-            model.rotation.y += 0.02;
+            return {
+                minX: borderX,
+                maxX: width - borderX,
+                minY: borderY,
+                maxY: height - borderY,
+                width: width - 2 * borderX,
+                height: height - 2 * borderY,
+            };
         }
 
-        renderer.render(scene, camera);
-    }
+        loader.load('cebollito2.glb', function (gltf) {
+            model = gltf.scene;
 
-    function updateRendererSize() {
-        const width = modelViewer.clientWidth;
-        const height = modelViewer.clientHeight;
-
-        camera.aspect = width / height;
-        camera.updateProjectionMatrix();
-        renderer.setSize(width, height);
-
-        // Recalculate bounds and adjust model
-        if (model) {
-            const bounds = getUsableCanvasBounds();
+            // Calculate the bounding box of the model
             const bbox = new THREE.Box3().setFromObject(model);
             const modelSize = {
                 width: bbox.max.x - bbox.min.x,
                 height: bbox.max.y - bbox.min.y,
+                depth: bbox.max.z - bbox.min.z,
             };
 
+            // Get usable canvas bounds
+            const bounds = getUsableCanvasBounds();
+
+            // Scale the model to fit within the usable bounds
             const scaleX = bounds.width / modelSize.width;
             const scaleY = bounds.height / modelSize.height;
-            const scale = Math.min(scaleX, scaleY) * 0.9;
-
+            const scale = Math.min(scaleX, scaleY) * 0.9; // Scale down slightly to leave some padding
             model.scale.set(scale, scale, scale);
+
+            // Center the model in the scene
             model.position.set(0, -modelSize.height / 2 * scale, 0);
 
-            // Adjust radius dynamically
-            radius = Math.min(bounds.width, bounds.height) / (2 * scale);
+            scene.add(model);
+
+            // Adjust camera position
+            camera.position.z = modelSize.depth * scale * 2;
+            updateRendererSize();
+        }, undefined, function (error) {
+            console.error(error);
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (model) {
+                // Chaotic movement
+                const bounds = getUsableCanvasBounds();
+                if (model.position.distanceTo(targetPosition) < 0.1) {
+                    targetPosition.set(
+                        THREE.MathUtils.randFloat(bounds.minX, bounds.maxX),
+                        THREE.MathUtils.randFloat(bounds.minY, bounds.maxY),
+                        THREE.MathUtils.randFloat(-bounds.height / 2, bounds.height / 2)
+                    );
+                }
+
+                model.position.lerp(targetPosition, speed);
+
+                // Rotation
+                model.rotation.y += 0.02;
+            }
+
+            renderer.render(scene, camera);
         }
-    }
 
-    window.addEventListener('resize', updateRendererSize);
-    animate();
-</script>
+        function updateRendererSize() {
+            const width = modelViewer.clientWidth;
+            const height = modelViewer.clientHeight;
 
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+
+            // Recalculate bounds and adjust model
+            if (model) {
+                const bounds = getUsableCanvasBounds();
+                const bbox = new THREE.Box3().setFromObject(model);
+                const modelSize = {
+                    width: bbox.max.x - bbox.min.x,
+                    height: bbox.max.y - bbox.min.y,
+                };
+
+                const scaleX = bounds.width / modelSize.width;
+                const scaleY = bounds.height / modelSize.height;
+                const scale = Math.min(scaleX, scaleY) * 0.9;
+
+                model.scale.set(scale, scale, scale);
+                model.position.set(0, -modelSize.height / 2 * scale, 0);
+            }
+        }
+
+        window.addEventListener('resize', updateRendererSize);
+        animate();
+    </script>
 </body>
 </html>
