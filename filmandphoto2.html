@@ -133,6 +133,7 @@
         let model;
         let modelHeight = 0;
         let angle = 0;
+        let mixer;
 
         loader.load('cebollito2.glb', function (gltf) {
             model = gltf.scene;
@@ -144,6 +145,12 @@
             scene.add(model);
             camera.position.z = modelHeight * 3;
             updateRendererSize();
+
+            if (gltf.animations.length > 0) {
+                mixer = new THREE.AnimationMixer(model);
+                const action = mixer.clipAction(gltf.animations[0]);
+                action.play();
+            }
         }, undefined, function (error) {
             console.error(error);
         });
@@ -169,6 +176,10 @@
 
                 // Rotation
                 model.rotation.y += 0.02;
+            }
+
+            if (mixer) {
+                mixer.update(0.01); // Update animations
             }
 
             renderer.render(scene, camera);
