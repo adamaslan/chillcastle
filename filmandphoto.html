@@ -39,7 +39,7 @@
         }
 
         #model-viewer {
-            width: calc(100% - 40px); /* Adjusting for 20px margin and padding */
+            width: calc(90% - 40px); /* Adjusting for 20px margin and padding */
             height: calc(300px - 40px); /* Adjusting for 20px margin and padding */
             margin: 20px;
             padding: 20px;
@@ -151,7 +151,6 @@
         let bounceSpeed = 0.03;
         let bounceDirection = 1;
         let radius = 3; // Radius for circular movement
-
         function animate() {
             requestAnimationFrame(animate);
 
@@ -163,7 +162,7 @@
 
                 // Bounce movement
                 model.position.y += bounceSpeed * bounceDirection;
-                if (model.position.y > 1 || model.position.y < -1) {
+                if (model.position.y > .5 || model.position.y < .5) {
                     bounceDirection *= -1;
                 }
 
