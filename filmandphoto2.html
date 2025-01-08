@@ -188,7 +188,220 @@
         function updateRendererSize() {
             const width = modelViewer.clientWidth;
             const height = modelViewer.clientHeight;
-            camera.aspect = width / height;
+            camera.aspect = wid<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Film and Photography</title>
+
+    <!-- Original links preserved -->
+    <link rel="stylesheet" href="dog2019.css">
+    <link type="text/css" rel="stylesheet" href="utopia.css"/>
+    <link rel="stylesheet" href="readable/readable.css">
+    <link rel="shortcut icon" href="cc4.ico" type="image/x-icon" />
+
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #000;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        div#bottomdiv {
+            position: fixed;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+            color: #FFFFFF;
+            background: #f9f9f9;
+            padding: 8px;
+        }
+
+        #model-viewer {
+            width: calc(100% - 40px);
+            height: calc(300px - 40px);
+            margin: 20px;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            position: relative;
+        }
+
+        a:link {
+            color: #000;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        a:visited {
+            text-decoration: none;
+            color: #E6E6E6;
+        }
+
+        a:hover {
+            text-decoration: none;
+            color: #F00;
+        }
+
+        a:active {
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            #model-viewer {
+                height: calc(200px - 40px);
+            }
+
+            body {
+                padding: 10px;
+            }
+        }
+
+        .animation-controls {
+            margin-top: 20px;
+        }
+
+        .brick-wall {
+            position: absolute;
+            border: 2px solid #999;
+            background-color: #c0c0c0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="model-viewer"></div>
+
+        <div class="animation-controls">
+            <label for="animations">Choose Animation:</label>
+            <select id="animations"></select>
+            <button id="play-animation">Play</button>
+        </div>
+
+        <br />
+        <p>Production Companies</p>
+        <br />
+        <p>Young and Grumpy - @youngandgrumpy<br>
+        Young and Grumpy Productions is a Brooklyn-based company specializing in photo and video production, particularly for product and tabletop content. Known for its versatility, the company provides high-quality services for clients across Brooklyn, Queens, and Manhattan. They cater to both low-budget and high-end productions, ensuring flexibility and affordability without compromising on quality.
+        <a href="https://www.theyoungandgrumpy.com"><u>www.theyoungandgrumpy.com</u></a></p>
+
+        <br>
+        <h2>Photographers, Videographers, Film Sound:</h2>
+        <p>Troy Vetri - Troy Vetri is a talented Director of Photography known for his work in documentaries and commercials. His notable projects include "The Total Solar Eclipse as a Catalyst for Art in Erie," "Hot Ones | Truth or Dab with Gigi Hadid and Tan France," and "Science in Service of Community". Vetri's work often explores themes of community, science, and art, showcasing his ability to capture impactful and visually stunning stories.
+        <a href="/www.troyvetri.com/"><u>/www.troyvetri.com/</u></a></p>
+
+        <p>Tara Sgroi
+        <a href="www.tarasgroi.com"><u>www.tarasgroi.com</u></a></p>
+
+        <p>Jordan Studdard @jordanstuddard - 
+        Jordan Studdard, known on TikTok as @jordanstuddard, is a content creator celebrated for his whimsical and imaginative short-form videos. He often features various characters he refers to as his "friends," such as Jacob, Natalia, and Catherine. With over 20.2 million likes and 776,000 followers, Studdard has built a significant following by crafting engaging and creative stories. Based in New York City, he shares his creative journey, including building miniature studios and DIY projects. His content is a blend of storytelling, creativity, and personal experiences, making him a beloved figure on social media.</p>
+
+        <p>Yago @yagowashere</p>
+
+        <p>Adam Aslan - @nycpony<br>
+        Adam Timur Aslan incorporates full-stack development with interests in film sound, 3d Animation, music, writing, and brutalist design to produce music videos and other web content.</p>
+    </div>
+
+    <div id="bottomdiv">
+        <!-- Original bottom content -->
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
+    <script>
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        const modelViewer = document.getElementById('model-viewer');
+        modelViewer.appendChild(renderer.domElement);
+
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(1, 1, 1).normalize();
+        scene.add(light);
+
+        const loader = new THREE.GLTFLoader();
+        let model;
+        let modelHeight = 0;
+        let angle = 0;
+        let mixer;
+        const animations = [];
+
+        loader.load('cebollito2.glb', function (gltf) {
+            model = gltf.scene;
+            model.scale.set(0.3, 0.3, 0.3);
+
+            const bbox = new THREE.Box3().setFromObject(model);
+            modelHeight = bbox.max.y - bbox.min.y;
+
+            scene.add(model);
+            camera.position.z = modelHeight * 3;
+            updateRendererSize();
+
+            if (gltf.animations.length > 0) {
+                mixer = new THREE.AnimationMixer(model);
+                gltf.animations.forEach((clip, index) => {
+                    animations.push(clip);
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = clip.name || `Animation ${index + 1}`;
+                    document.getElementById('animations').appendChild(option);
+                });
+            }
+        }, undefined, function (error) {
+            console.error(error);
+        });
+
+        let bounceSpeed = 0.03;
+        let bounceDirection = 1;
+        let radius = 3; // Radius for circular movement
+
+        const brickWall = document.createElement('div');
+        brickWall.className = 'brick-wall';
+        modelViewer.appendChild(brickWall);
+
+        function updateBrickWallSize() {
+            brickWall.style.width = `${modelViewer.clientWidth}px`;
+            brickWall.style.height = `${modelViewer.clientHeight}px`;
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (model) {
+                angle += 0.01; // Update angle for revolution
+
+                model.position.x = radius * Math.cos(angle);
+                model.position.z = radius * Math.sin(angle);
+
+                // Bounce movement
+                model.position.y += bounceSpeed * bounceDirection;
+                if (model.position.y > 1 || model.position.y < -1) {
+                    bounceDirection *= -1;
+                }
+
+                // Rotation
+                model.rotation.y += 0.02;
+            }
+
+            if (mixer) {
+                mixer.update(0.01);
+th / height;
             camera.updateProjectionMatrix();
             renderer.setSize(width, height);
         }
